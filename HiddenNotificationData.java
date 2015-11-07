@@ -33,6 +33,11 @@ public class HiddenNotificationData{
       return mHiddenEntries.get(key);
    }
 
+   public void add(HiddenEntry entry) {
+      mHiddenEntries.put(entry.notification.getKey(), entry);
+   }
+
+
    public HiddenEntry remove(String key) {
       HiddenEntry removed = mHiddenEntries.remove(key);
       if (removed == null) return null;
