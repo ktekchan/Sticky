@@ -11,7 +11,7 @@ import com.android.systemui.statusbar.NotificationData.Entry;
 import java.util.ArrayList;
 
 public class HiddenNotificationData{
-   
+
    private static HiddenNotificationData hiddenNotificationData;
 
    public static synchronized HiddenNotificationData getSharedInstance(){
@@ -25,12 +25,6 @@ public class HiddenNotificationData{
 
    // Hash Map to save the information for easy access
    private final ArrayMap<String, Entry> mHiddenEntries = new ArrayMap<>();
-   private final ArrayList<Entry> mHiddenSortedAndFiltered = new ArrayList<>();
-
-   // All current active hidden notifications
-   public ArrayList<Entry> getActiveHiddenNotifications() {
-      return mHiddenSortedAndFiltered;
-   }
 
    public Entry get(String key) {
       return mHiddenEntries.get(key);
