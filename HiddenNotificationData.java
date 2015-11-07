@@ -5,28 +5,13 @@ package android.content;/* ktekchan */
  * access this information
  */
 
-import android.service.notification.StatusBarNotification;
 import android.support.v4.util.ArrayMap;
-import com.android.systemui.statusbar.StatusBarIconView;
+import com.android.systemui.statusbar.NotificationData.Entry;
 
 import java.util.ArrayList;
 
 public class HiddenNotificationData{
-
-   // Entry object for the map
-   public static final class HiddenEntry{
-      public String key;
-      public StatusBarNotification notification;
-      public StatusBarIconView icon;
-
-      public HiddenEntry(StatusBarNotification n, StatusBarIconView ic) {
-         this.key = n.getKey();
-         this.notification = n;
-         this.icon = ic;
-      }
-   }
-
-
+   
    private static HiddenNotificationData hiddenNotificationData;
 
    public static synchronized HiddenNotificationData getSharedInstance(){
@@ -39,25 +24,25 @@ public class HiddenNotificationData{
 
 
    // Hash Map to save the information for easy access
-   private final ArrayMap<String, HiddenEntry> mHiddenEntries = new ArrayMap<>();
-   private final ArrayList<HiddenEntry> mHiddenSortedAndFiltered = new ArrayList<>();
+   private final ArrayMap<String, Entry> mHiddenEntries = new ArrayMap<>();
+   private final ArrayList<Entry> mHiddenSortedAndFiltered = new ArrayList<>();
 
    // All current active hidden notifications
-   public ArrayList<HiddenEntry> getActiveHiddenNotifications() {
+   public ArrayList<Entry> getActiveHiddenNotifications() {
       return mHiddenSortedAndFiltered;
    }
 
-   public HiddenEntry get(String key) {
+   public Entry get(String key) {
       return mHiddenEntries.get(key);
    }
 
-   public void add(HiddenEntry entry) {
+   public void add(Entry entry) {
       mHiddenEntries.put(entry.notification.getKey(), entry);
    }
 
 
-   public HiddenEntry remove(String key) {
-      HiddenEntry removed = mHiddenEntries.remove(key);
+   public Entry remove(String key) {
+      Entry removed = mHiddenEntries.remove(key);
       if (removed == null) return null;
       return removed;
    }
