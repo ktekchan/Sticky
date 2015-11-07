@@ -1,9 +1,15 @@
-/* ktekchan */
+package android.content;/* ktekchan */
 
 /*
  * This class saves data about hidden notifications in a map and methods to
  * access this information
  */
+
+import android.service.notification.StatusBarNotification;
+import android.support.v4.util.ArrayMap;
+import com.android.systemui.statusbar.StatusBarIconView;
+
+import java.util.ArrayList;
 
 public class HiddenNotificationData{
 
@@ -13,12 +19,24 @@ public class HiddenNotificationData{
       public StatusBarNotification notification;
       public StatusBarIconView icon;
 
-      public Entry(StatusBarNotification n, StatusBarIconView ic) {
+      public HiddenEntry(StatusBarNotification n, StatusBarIconView ic) {
          this.key = n.getKey();
          this.notification = n;
          this.icon = ic;
       }
    }
+
+
+   private static HiddenNotificationData hiddenNotificationData;
+
+   public static synchronized HiddenNotificationData getSharedInstance(){
+      if (hiddenNotificationData == null){
+         hiddenNotificationData = new HiddenNotificationData();
+      }
+      return hiddenNotificationData;
+   }
+
+
 
    // Hash Map to save the information for easy access
    private final ArrayMap<String, HiddenEntry> mHiddenEntries = new ArrayMap<>();
