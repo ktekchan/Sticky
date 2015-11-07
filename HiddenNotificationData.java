@@ -26,7 +26,7 @@ public class HiddenNotificationData{
 
    // All current active hidden notifications
    public ArrayList<HiddenEntry> getActiveHiddenNotifications() {
-      return mSortedAndFiltered;
+      return mHiddenSortedAndFiltered;
    }
 
    public HiddenEntry get(String key) {
