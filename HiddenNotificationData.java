@@ -5,8 +5,14 @@ package android.content;/* ktekchan */
  * access this information
  */
 
+import android.app.ActivityManager;
 import android.service.notification.StatusBarNotification;
 import android.util.ArrayMap;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class HiddenNotificationData{
 
@@ -49,28 +55,40 @@ public class HiddenNotificationData{
    }
 
 
-   // remove notifications for particular package
-   public void removePackage(String pkgName){
-      for(ArrayMap.Entry<String, Object> entry : mHiddenEntries.entrySet()) {
-         String key = entry.getKey();
-         if(key.contains(pkgName)){
-            remove(key);
+
+   public HashSet<String> generateNotifAppNameMap(){
+      HashSet<String> nameSet = new HashSet<>();
+      for(String key : mHiddenEntries.keySet()) {
+         String pkgName = key.split("|")[1];
+         nameSet.add(pkgName);
+      }
+      return nameSet;
+   }
+
+   public void filterEntries(Context context){
+
+      ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+      List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+
+      HashSet<String> nameSet = generateNotifAppNameMap();
+      for(int i = 0; i < procInfos.size(); i++) {
+         if (nameSet.contains(procInfos.get(i).processName)) {
+            nameSet.remove(procInfos.get(i).processName);
+         }
+      }
+
+      Iterator<Map.Entry<String, Object>> iter = mHiddenEntries.entrySet().iterator();
+      while(iter.hasNext()){
+         Map.Entry<String,Object> entry = iter.next();
+         if(nameSet.contains(entry.getKey().split("|")[1])){
+            iter.remove();
+            mHiddenSbn.remove(entry.getKey());
          }
       }
    }
 
-   public Boolean isAppRunning(String appName,Context context){
-
-      ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-      List<RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
-      for(int i = 0; i < procInfos.size(); i++)
-         {
-            if(procInfos.get(i).processName.equals(appName)) 
-            {
-               return true;
-            }
-         }
-      removePackage(appName);
-      return false;
+   public ArrayMap<String, StatusBarNotification> getHiddenSbn(Context context){
+      filterEntries(context);
+      return mHiddenSbn;
    }
 }
