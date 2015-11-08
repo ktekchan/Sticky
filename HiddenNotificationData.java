@@ -59,4 +59,18 @@ public class HiddenNotificationData{
       }
    }
 
+   public Boolean isAppRunning(String appName,Context context){
+
+      ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+      List<RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+      for(int i = 0; i < procInfos.size(); i++)
+         {
+            if(procInfos.get(i).processName.equals(appName)) 
+            {
+               return true;
+            }
+         }
+      removePackage(appName);
+      return false;
+   }
 }
