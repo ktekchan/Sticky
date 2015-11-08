@@ -14,6 +14,7 @@ public class HiddenNotificationData{
 
    private static HiddenNotificationData hiddenNotificationData;
 
+   // Gets the single shared instance
    public static synchronized HiddenNotificationData getSharedInstance(){
       if (hiddenNotificationData == null){
          hiddenNotificationData = new HiddenNotificationData();
@@ -39,6 +40,16 @@ public class HiddenNotificationData{
       Entry removed = mHiddenEntries.remove(key);
       if (removed == null) return null;
       return removed;
+   }
+
+   // remove notifications for particular package
+   public void removePackage(String pkgName){
+      for(ArrayMap.Entry<String, Entry> entry : mHiddenEntries.entrySet()) {
+         String key = entry.getKey();
+         if(key.contains(pkgName)){
+            remove(key);
+         }
+      }
    }
 
 }
