@@ -5,6 +5,7 @@ package android.content;/* ktekchan */
  * access this information
  */
 
+import android.service.notification.StatusBarNotification;
 import android.util.ArrayMap;
 
 public class HiddenNotificationData{
@@ -22,19 +23,27 @@ public class HiddenNotificationData{
 
 
    // Hash Map to save the information for easy access
-   private final ArrayMap<String, Object> mHiddenEntries = new ArrayMap<>();
+   private ArrayMap<String, Object> mHiddenEntries = new ArrayMap<>();
+   private ArrayMap<String, StatusBarNotification> mHiddenSbn = new ArrayMap<>();
 
    public Object get(String key) {
       return mHiddenEntries.get(key);
    }
 
-   public void add(String key, Object entry) {
+   public void add(String key, Object entry, StatusBarNotification sbn) {
       mHiddenEntries.put(key, entry);
+      mHiddenSbn.put(key,sbn);
    }
 
 
+   public ArrayMap<String,StatusBarNotification> getDisplayMap(){
+
+      return mHiddenSbn;
+   }
+
    public Object remove(String key) {
       Object removed = mHiddenEntries.remove(key);
+      mHiddenSbn.remove(key);
       if (removed == null) return null;
       return removed;
    }
