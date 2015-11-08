@@ -5,10 +5,8 @@ package android.content;/* ktekchan */
  * access this information
  */
 
-import android.support.v4.util.ArrayMap;
-import com.android.systemui.statusbar.NotificationData.Entry;
-
-import java.util.ArrayList;
+import android.util.ArrayMap;
+import com.android.systemui.statusbar.NotificationData;
 
 public class HiddenNotificationData{
 
@@ -24,21 +22,22 @@ public class HiddenNotificationData{
 
 
    // Hash Map to save the information for easy access
-   private final ArrayMap<String, Entry> mHiddenEntries = new ArrayMap<>();
+   private final ArrayMap<String, Object> mHiddenEntries = new ArrayMap<>();
 
-   public Entry get(String key) {
+   public Object get(String key) {
       return mHiddenEntries.get(key);
    }
 
-   public void add(Entry entry) {
-      mHiddenEntries.put(entry.notification.getKey(), entry);
+   public void add(String key, Object entry) {
+      mHiddenEntries.put(key, entry);
    }
 
 
-   public Entry remove(String key) {
-      Entry removed = mHiddenEntries.remove(key);
+   public Object remove(String key) {
+      Object removed = mHiddenEntries.remove(key);
       if (removed == null) return null;
       return removed;
    }
+
 
 }
