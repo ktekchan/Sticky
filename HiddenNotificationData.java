@@ -6,12 +6,12 @@ package android.content;/* ktekchan */
  */
 
 import android.util.ArrayMap;
-import com.android.systemui.statusbar.NotificationData;
 
 public class HiddenNotificationData{
 
    private static HiddenNotificationData hiddenNotificationData;
 
+   // Gets the single shared instance
    public static synchronized HiddenNotificationData getSharedInstance(){
       if (hiddenNotificationData == null){
          hiddenNotificationData = new HiddenNotificationData();
@@ -39,5 +39,15 @@ public class HiddenNotificationData{
       return removed;
    }
 
+
+   // remove notifications for particular package
+   public void removePackage(String pkgName){
+      for(ArrayMap.Entry<String, Object> entry : mHiddenEntries.entrySet()) {
+         String key = entry.getKey();
+         if(key.contains(pkgName)){
+            remove(key);
+         }
+      }
+   }
 
 }
