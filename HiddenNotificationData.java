@@ -8,6 +8,7 @@ package android.content;/* ktekchan */
 import android.app.ActivityManager;
 import android.service.notification.StatusBarNotification;
 import android.util.ArrayMap;
+import android.util.Log;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,19 +38,22 @@ public class HiddenNotificationData{
    }
 
    public void add(String key, Object entry, StatusBarNotification sbn) {
+      Log.d("YAAP", "add  in Hidden Notification - " + key + "for app - "+sbn.getPackageName());
       mHiddenEntries.put(key, entry);
       mHiddenSbn.put(key,sbn);
+      Log.d("YAAP", "Hidden Sbn "+mHiddenSbn);
+      Log.d("YAAP", "Hidden Entries "+mHiddenSbn);
+
    }
 
 
-   public ArrayMap<String,StatusBarNotification> getDisplayMap(){
-
-      return mHiddenSbn;
-   }
 
    public Object remove(String key) {
+
       Object removed = mHiddenEntries.remove(key);
-      mHiddenSbn.remove(key);
+      StatusBarNotification sbn = mHiddenSbn.remove(key);
+      Log.d("YAAP", "Remove  in Hidden Notification - " + key + "for app - "+sbn.getPackageName());
+
       if (removed == null) return null;
       return removed;
    }
@@ -57,11 +61,14 @@ public class HiddenNotificationData{
 
 
    public HashSet<String> generateNotifAppNameMap(){
+
       HashSet<String> nameSet = new HashSet<>();
       for(String key : mHiddenEntries.keySet()) {
          String pkgName = key.split("|")[1];
          nameSet.add(pkgName);
       }
+      Log.d("YAAP", "Current apps with notifs hidden - " + nameSet);
+
       return nameSet;
    }
 
@@ -81,13 +88,15 @@ public class HiddenNotificationData{
       while(iter.hasNext()){
          Map.Entry<String,Object> entry = iter.next();
          if(nameSet.contains(entry.getKey().split("|")[1])){
+            Log.d("YAAP", "Entry removed for stopped app "+entry.getKey());
+
             iter.remove();
             mHiddenSbn.remove(entry.getKey());
          }
       }
    }
 
-   public ArrayMap<String, StatusBarNotification> getHiddenSbn(Context context){
+   public ArrayMap<String, StatusBarNotification> getDisplayMap(Context context){
       filterEntries(context);
       return mHiddenSbn;
    }
