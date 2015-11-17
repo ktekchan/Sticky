@@ -17,21 +17,28 @@ import java.util.Map;
 
 public class HiddenNotificationData{
 
-   private static HiddenNotificationData hiddenNotificationData;
+
+   // Hash Map to save the information for easy access
+   private ArrayMap<String, Object> mHiddenEntries = new ArrayMap<String, Object>();
+   private ArrayMap<String, StatusBarNotification> mHiddenSbn = new ArrayMap<String, StatusBarNotification>();
+
+   // Constructor
+   public HiddenNotificationData(){
+   }
+
+   private static HiddenNotificationData hiddenNotificationData = null;
 
    // Gets the single shared instance
    public static synchronized HiddenNotificationData getSharedInstance(){
       if (hiddenNotificationData == null){
          hiddenNotificationData = new HiddenNotificationData();
+         Log.d("YAAP", "get Shared instance NEW null case" + hiddenNotificationData);
       }
+      Log.d("YAAP", "get Shared instance");
       return hiddenNotificationData;
    }
 
 
-
-   // Hash Map to save the information for easy access
-   private ArrayMap<String, Object> mHiddenEntries = new ArrayMap<>();
-   private ArrayMap<String, StatusBarNotification> mHiddenSbn = new ArrayMap<>();
 
    public Object get(String key) {
       return mHiddenEntries.get(key);
@@ -98,6 +105,7 @@ public class HiddenNotificationData{
 
    public ArrayMap<String, StatusBarNotification> getDisplayMap(Context context){
       filterEntries(context);
+      Log.d("YAAP", "Size of display map ArrayMap is"+Integer.toString(mHiddenSbn.size()));
       return mHiddenSbn;
    }
 }
