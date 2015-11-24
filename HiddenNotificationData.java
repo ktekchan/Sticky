@@ -32,9 +32,11 @@ public class HiddenNotificationData{
    public static synchronized HiddenNotificationData getSharedInstance(){
       if (hiddenNotificationData == null){
          hiddenNotificationData = new HiddenNotificationData();
-         Log.d("YAAP", "get Shared instance NEW null case" + hiddenNotificationData);
+         Log.d("YAAP", "get Shared instance - First Creation");
       }
-      Log.d("YAAP", "get Shared instance");
+//      Log.d("YAAP", "Class object - "+HiddenNotificationData.class);
+
+      Log.d("YAAP", "get Shared instance NEW null case" + hiddenNotificationData);
       return hiddenNotificationData;
    }
 
@@ -46,8 +48,8 @@ public class HiddenNotificationData{
 
    public void add(String key, Object entry, StatusBarNotification sbn) {
       Log.d("YAAP", "add  in Hidden Notification - " + key + "for app - "+sbn.getPackageName());
-      mHiddenEntries.put(key, entry);
       mHiddenSbn.put(key,sbn);
+      mHiddenEntries.put(key,entry);
       Log.d("YAAP", "Hidden Sbn "+mHiddenSbn);
       Log.d("YAAP", "Hidden Entries "+mHiddenSbn);
 
@@ -104,7 +106,7 @@ public class HiddenNotificationData{
    }
 
    public ArrayMap<String, StatusBarNotification> getDisplayMap(Context context){
-      filterEntries(context);
+      //filterEntries(context);
       Log.d("YAAP", "Size of display map ArrayMap is"+Integer.toString(mHiddenSbn.size()));
       return mHiddenSbn;
    }
