@@ -6,6 +6,7 @@ package android.content;/* ktekchan */
  */
 
 import android.app.ActivityManager;
+import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -56,6 +57,13 @@ public class HiddenNotificationData{
    }
 
 
+   public Bundle getBundle(){
+      Bundle bundle = new Bundle();
+      for (Map.Entry<String,StatusBarNotification> sbnEntry: mHiddenSbn.entrySet()){
+         bundle.putParcelable(sbnEntry.getKey(),sbnEntry.getValue());
+      }
+      return  bundle;
+   }
 
    public Object remove(String key) {
 
