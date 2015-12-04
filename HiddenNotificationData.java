@@ -51,8 +51,8 @@ public class HiddenNotificationData{
       Log.d("YAAP", "add  in Hidden Notification - " + key + "for app - "+sbn.getPackageName());
       mHiddenSbn.put(key,sbn);
       mHiddenEntries.put(key,entry);
-      Log.d("YAAP", "Hidden Sbn "+mHiddenSbn);
-      Log.d("YAAP", "Hidden Entries "+mHiddenSbn);
+//      Log.d("YAAP", "Hidden Sbn "+mHiddenSbn);
+//      Log.d("YAAP", "Hidden Entries "+mHiddenSbn);
 
    }
 
